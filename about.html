@@ -18,7 +18,7 @@
       width: 100%;
       height: 100%;
       background: transparent url("https://www.transparenttextures.com/patterns/stardust.png") repeat;
-      animation: moveStars 100s linear infinite;
+      animation: moveStars 120s linear infinite;
       z-index: -2;
     }
 
@@ -33,65 +33,12 @@
       height: 150%;
       top: -25%;
       left: -25%;
-      background: radial-gradient(circle at 40% 40%, rgba(0,255,255,0.2), transparent 60%),
-                  radial-gradient(circle at 60% 60%, rgba(0,0,255,0.2), transparent 60%);
-      animation: drift 200s linear infinite;
+      background: radial-gradient(circle at 40% 40%, rgba(0,255,255,0.25), transparent 60%),
+                  radial-gradient(circle at 60% 60%, rgba(0,0,255,0.25), transparent 60%);
+      animation: drift 250s linear infinite;
       z-index: -1;
     }
 
     @keyframes drift {
       from {transform: translate(0,0);}
-      to {transform: translate(-200px,150px);}
-    }
-
-    h1 {
-      margin-top: 120px;
-      font-size: 50px;
-      color: #00ffff;
-      text-shadow: 0 0 10px #00ffff, 0 0 30px #0088ff;
-    }
-
-    p {
-      max-width: 700px;
-      margin: 40px auto;
-      font-size: 22px;
-      line-height: 1.6;
-    }
-
-    .btn {
-      display: inline-block;
-      margin-top: 40px;
-      padding: 12px 30px;
-      font-size: 18px;
-      color: white;
-      border: 2px solid #00ffff;
-      border-radius: 30px;
-      text-decoration: none;
-      transition: 0.3s;
-    }
-
-    .btn:hover {
-      background: #00ffff;
-      color: black;
-      box-shadow: 0 0 20px #00ffff;
-      transform: translateY(-5px);
-    }
-  </style>
-</head>
-<body>
-
-<div class="stars"></div>
-<div class="nebula"></div>
-
-<h1>👤 About Me</h1>
-
-<p>
-안녕하세요! 저는 남강현입니다.<br>
-우주처럼 넓은 가능성을 꿈꾸며 웹사이트를 만들고 있습니다.<br>
-이곳은 저만의 작은 우주입니다 🌌
-</p>
-
-<a href="index.html" class="btn">🏠 Home</a>
-
-</body>
-</html>
+      to
