@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>클릭 게임</title>
+
+<style>
+body {
+  margin: 0;
+  background: black;
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.container {
+  margin-top: 150px;
+}
+
+button {
+  padding: 20px 40px;
+  font-size: 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: white;
+  color: black;
+  margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🚀 클릭 점수 게임</h1>
+  <p>10초 동안 최대한 많이 클릭하세요!</p>
+
+  <h2>점수: <span id="score">0</span></h2>
+  <h3>남은 시간: <span id="time">10</span>초</h3>
+
+  <button onclick="clickGame()">클릭!</button>
+</div>
+
+<script>
+let score = 0;
+let timeLeft = 10;
+let gameStarted = false;
+
+function clickGame() {
+  if (!gameStarted) return;
+  score++;
+  document.getElementById("score").innerText = score;
+}
+
+function startGame() {
+  gameStarted = true;
+
+  let timer = setInterval(function() {
+    timeLeft--;
+    document.getElementById("time").innerText = timeLeft;
+
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      gameStarted = false;
+      alert("게임 끝! 점수: " + score);
+    }
+  }, 1000);
+}
+
+startGame();
+</script>
+
+</body>
+</html>
