@@ -2,19 +2,75 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>남강현의 우주</title>
+<title>남강현의 우주 사이트</title>
+
+<style>
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #0a0f2c, #000000);
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.container {
+  margin-top: 150px;
+}
+
+button {
+  padding: 15px 30px;
+  font-size: 18px;
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn-main {
+  background: white;
+  color: black;
+}
+
+.games-box {
+  margin-top: 40px;
+  padding: 20px;
+  display: none;
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
 </head>
 
-<body style="margin:0; background:black; color:white; text-align:center; font-family:Arial;">
+<body>
 
-<div style="margin-top:200px;">
-  <h1>🌌 남강현의 우주</h1>
-  <p>메인 화면입니다 🚀</p>
+<div class="container">
+  <h1>🌌 남강현의 우주 웹사이트</h1>
+  <p>환영합니다 🚀</p>
 
-  <a href="about.html" style="padding:10px 20px; background:white; color:black; text-decoration:none; border-radius:8px;">소개</a>
-  <a href="contact.html" style="padding:10px 20px; background:white; color:black; text-decoration:none; border-radius:8px;">연락처</a>
-  <a href="#" style="padding:10px 20px; background:white; color:black; text-decoration:none; border-radius:8px;">게임</a>
+  <button class="btn-main" onclick="location.href='about.html'">소개</button>
+  <button class="btn-main" onclick="showGames()">게임</button>
+
+  <div class="games-box" id="games">
+    <h2>🎮 내 게임 닉네임</h2>
+    <p>발로란트: Villain #Dev1l</p>
+    <p>롤: 발로 동일</p>
+    <p>피파</p>
+    <p>브롤: Villain</p>
+    <p>좀비고: 승리한빌런</p>
+  </div>
 </div>
 
-</body>
-</html>
+<script>
+function showGames() {
+  var box = document.getElementById("games");
+  
+  if (box.style.display === "none" || box.style.display === "") {
+    box.style.display = "block";
+  } else {
+    box.style.display = "none";
+  }
+}
+<
