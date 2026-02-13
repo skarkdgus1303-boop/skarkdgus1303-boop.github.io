@@ -24,22 +24,17 @@ button {
   border: none;
   border-radius: 10px;
   cursor: pointer;
-}
-
-.btn-main {
   background: white;
   color: black;
 }
 
 .games-box {
-  margin-top: 40px;
+  margin: 30px auto;
   padding: 20px;
-  display: none;
+  width: 320px;
   background: rgba(255,255,255,0.1);
   border-radius: 15px;
-  width: 300px;
-  margin-left: auto;
-  margin-right: auto;
+  display: none;
 }
 </style>
 </head>
@@ -50,10 +45,10 @@ button {
   <h1>🌌 남강현의 우주 웹사이트</h1>
   <p>환영합니다 🚀</p>
 
-  <button class="btn-main" onclick="location.href='about.html'">소개</button>
-  <button class="btn-main" onclick="showGames()">게임</button>
+  <button onclick="goAbout()">소개</button>
+  <button onclick="toggleGames()">게임</button>
 
-  <div class="games-box" id="games">
+  <div id="gamesBox" class="games-box">
     <h2>🎮 내 게임 닉네임</h2>
     <p>발로란트: Villain #Dev1l</p>
     <p>롤: 발로 동일</p>
@@ -64,13 +59,20 @@ button {
 </div>
 
 <script>
-function showGames() {
-  var box = document.getElementById("games");
-  
-  if (box.style.display === "none" || box.style.display === "") {
-    box.style.display = "block";
-  } else {
+function goAbout() {
+  window.location.href = "about.html";
+}
+
+function toggleGames() {
+  var box = document.getElementById("gamesBox");
+
+  if (box.style.display === "block") {
     box.style.display = "none";
+  } else {
+    box.style.display = "block";
   }
 }
-<
+</script>
+
+</body>
+</html>
