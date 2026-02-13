@@ -13,25 +13,15 @@
       overflow: hidden;
     }
 
-    /* 별 배경 */
+    /* 별 */
     .stars {
       position: fixed;
       width: 100%;
       height: 100%;
       background: transparent url("https://www.transparenttextures.com/patterns/stardust.png") repeat;
-      animation: moveStars 100s linear infinite;
+      animation: moveStars 120s linear infinite;
       z-index: -2;
     }
 
     @keyframes moveStars {
       from {background-position: 0 0;}
-      to {background-position: 10000px 5000px;}
-    }
-
-    /* 성운 배경 */
-    .nebula {
-      position: fixed;
-      width: 150%;
-      height: 150%;
-      top: -25%;
-      le
