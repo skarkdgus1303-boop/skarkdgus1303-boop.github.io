@@ -1,44 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>About Me</title>
-  <style>
-    body {
-      margin: 0;
-      background: black;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      overflow: hidden;
-    }
+<meta charset="UTF-8">
+<title>About Me</title>
 
-    .stars {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: transparent url("https://www.transparenttextures.com/patterns/stardust.png") repeat;
-      animation: moveStars 120s linear infinite;
-      z-index: -2;
-    }
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    background: black;
+    color: white;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
 
-    @keyframes moveStars {
-      from {background-position: 0 0;}
-      to {background-position: 10000px 5000px;}
-    }
-
-    .nebula {
-      position: fixed;
-      width: 150%;
-      height: 150%;
-      top: -25%;
-      left: -25%;
-      background: radial-gradient(circle at 40% 40%, rgba(0,255,255,0.25), transparent 60%),
-                  radial-gradient(circle at 60% 60%, rgba(0,0,255,0.25), transparent 60%);
-      animation: drift 250s linear infinite;
-      z-index: -1;
-    }
-
-    @keyframes drift {
-      from {transform: translate(0,0);}
-      to
+/* 별 배경 */
+.stars {
+    widt
