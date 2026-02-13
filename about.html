@@ -7,14 +7,33 @@
 <style>
 body {
   margin: 0;
-  background: black;
+  background: radial-gradient(circle at top, #0a0f2c, #000000);
   color: white;
   font-family: Arial, sans-serif;
   text-align: center;
 }
 
 .container {
-  margin-top: 200px;
+  margin-top: 150px;
+  padding: 20px;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.1);
+  display: inline-block;
+  padding: 30px;
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
+  max-width: 500px;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+p {
+  line-height: 1.6;
+  font-size: 18px;
 }
 </style>
 </head>
@@ -22,9 +41,18 @@ body {
 <body>
 
 <div class="container">
-  <h1>About Me 🌌</h1>
-  <p>안녕하세요 남강현입니다.</p>
-  <p>우주 감성 웹사이트 제작 중 🚀</p>
+  <div class="card">
+    <h1>🌌 About Me</h1>
+    
+    <p><strong>이름:</strong> 남강현</p>
+    <p><strong>관심 분야:</strong> 웹 개발, 코딩, 게임</p>
+    <p><strong>목표:</strong> 나만의 멋진 웹사이트와 게임 만들기 🚀</p>
+    <p>
+      현재 HTML과 웹사이트 제작을 배우는 중이며,  
+      우주 감성 디자인을 좋아합니다.  
+      앞으로 더 다양한 기능을 추가할 예정입니다!
+    </p>
+  </div>
 </div>
 
 </body>
