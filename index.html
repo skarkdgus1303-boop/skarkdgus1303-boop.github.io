@@ -7,27 +7,10 @@
 <style>
 body {
   margin: 0;
+  background: black;
   color: white;
   font-family: Arial, sans-serif;
   text-align: center;
-  overflow: hidden;
-}
-
-/* 우주 배경 */
-.space {
-  position: fixed;
-  width: 200%;
-  height: 200%;
-  background-image: url("https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3");
-  background-size: cover;
-  background-position: center;
-  animation: moveSpace 60s linear infinite;
-  z-index: -1;
-}
-
-@keyframes moveSpace {
-  from { transform: translate(0, 0); }
-  to { transform: translate(-200px, -200px); }
 }
 
 .container {
@@ -38,29 +21,21 @@ a {
   display: inline-block;
   margin: 10px;
   padding: 12px 25px;
-  background: rgba(255,255,255,0.8);
+  background: white;
   color: black;
   text-decoration: none;
   border-radius: 10px;
-  transition: 0.3s;
-}
-
-a:hover {
-  background: white;
 }
 </style>
 </head>
 
 <body>
 
-<div class="space"></div>
-
 <div class="container">
-  <h1>🌌 남강현의 우주</h1>
-  <p>진짜 우주 배경 버전 🚀</p>
+  <h1>남강현의 우주 🚀</h1>
+  <p>메인 화면입니다</p>
 
   <a href="about.html">소개</a>
-  <a href="contact.html">연락처</a>
 </div>
 
 </body>
