@@ -2,53 +2,173 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>우주 슈팅 게임</title>
+<title>우주 게임 센터</title>
 <style>
-body { margin:0; background:black; overflow:hidden; }
-#player {
-  width: 40px;
-  height: 40px;
-  background: cyan;
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
+body{
+  margin:0;
+  background:black;
+  color:white;
+  text-align:center;
+  font-family:Arial;
+  overflow:hidden;
 }
-.enemy {
-  width: 30px;
-  height: 30px;
-  background: red;
-  position: absolute;
-  top: 0;
+
+button{
+  padding:10px 20px;
+  margin:10px;
+  border:2px solid cyan;
+  background:transparent;
+  color:cyan;
+  cursor:pointer;
+}
+
+button:hover{
+  background:cyan;
+  color:black;
+}
+
+#gameArea{
+  position:relative;
+  width:100%;
+  height:80vh;
+  overflow:hidden;
+}
+
+.player{
+  width:40px;
+  height:40px;
+  background:cyan;
+  position:absolute;
+  bottom:10px;
+}
+
+.enemy{
+  width:30px;
+  height:30px;
+  background:red;
+  position:absolute;
+}
+
+.target{
+  width:30px;
+  height:30px;
+  background:yellow;
+  position:absolute;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div id="player"></div>
+<h1>🎮 우주 게임 센터 🎮</h1>
+
+<div id="menu">
+  <button onclick="startShooting()">🛸 슈팅 게임</button>
+  <button onclick="startDodge()">🧱 피하기 게임</button>
+  <button onclick="startClick()">🎯 클릭 게임</button>
+  <br>
+  <a href="index.html"><button>🏠 홈으로</button></a>
+</div>
+
+<div id="gameArea"></div>
 
 <script>
-const player = document.getElementById("player");
 
-document.addEventListener("mousemove", e=>{
-  player.style.left = e.pageX + "px";
-});
+let gameArea = document.getElementById("gameArea");
 
-function spawnEnemy(){
-  let enemy = document.createElement("div");
-  enemy.className = "enemy";
-  enemy.style.left = Math.random()*window.innerWidth + "px";
-  document.body.appendChild(enemy);
-
-  let fall = setInterval(()=>{
-    enemy.style.top = enemy.offsetTop + 5 + "px";
-    if(enemy.offsetTop > window.innerHeight){
-      clearInterval(fall);
-      enemy.remove();
-    }
-  },30);
+function clearGame(){
+  gameArea.innerHTML="";
 }
-setInterval(spawnEnemy,1000);
+
+/* ================== 슈팅 게임 ================== */
+function startShooting(){
+  clearGame();
+  let player = document.createElement("div");
+  player.className="player";
+  gameArea.appendChild(player);
+
+  document.onmousemove = e=>{
+    player.style.left = e.pageX+"px";
+  }
+
+  setInterval(()=>{
+    let enemy = document.createElement("div");
+    enemy.className="enemy";
+    enemy.style.left=Math.random()*window.innerWidth+"px";
+    gameArea.appendChild(enemy);
+
+    let fall=setInterval(()=>{
+      enemy.style.top=(enemy.offsetTop+5)+"px";
+      if(enemy.offsetTop>window.innerHeight){
+        enemy.remove();
+        clearInterval(fall);
+      }
+    },30);
+
+  },1000);
+}
+
+/* ================== 피하기 게임 ================== */
+function startDodge(){
+  clearGame();
+  let player = document.createElement("div");
+  player.className="player";
+  gameArea.appendChild(player);
+
+  document.onmousemove = e=>{
+    player.style.left = e.pageX+"px";
+  }
+
+  setInterval(()=>{
+    let enemy = document.createElement("div");
+    enemy.className="enemy";
+    enemy.style.left=Math.random()*window.innerWidth+"px";
+    gameArea.appendChild(enemy);
+
+    let fall=setInterval(()=>{
+      enemy.style.top=(enemy.offsetTop+7)+"px";
+
+      if(
+        enemy.offsetTop+30 > player.offsetTop &&
+        enemy.offsetLeft < player.offsetLeft+40 &&
+        enemy.offsetLeft+30 > player.offsetLeft
+      ){
+        alert("💥 게임오버!");
+        location.reload();
+      }
+
+      if(enemy.offsetTop>window.innerHeight){
+        enemy.remove();
+        clearInterval(fall);
+      }
+    },30);
+  },800);
+}
+
+/* ================== 클릭 게임 ================== */
+function startClick(){
+  clearGame();
+  let score=0;
+
+  setInterval(()=>{
+    let target=document.createElement("div");
+    target.className="target";
+    target.style.left=Math.random()*window.innerWidth+"px";
+    target.style.top=Math.random()*window.innerHeight+"px";
+
+    target.onclick=()=>{
+      score++;
+      target.remove();
+      document.title="점수: "+score;
+    }
+
+    gameArea.appendChild(target);
+
+    setTimeout(()=>target.remove(),1500);
+  },1000);
+}
+
 </script>
 
 </body>
