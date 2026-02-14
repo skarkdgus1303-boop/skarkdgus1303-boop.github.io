@@ -2,73 +2,53 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>클릭 게임</title>
-
+<title>우주 슈팅 게임</title>
 <style>
-body {
-  margin: 0;
-  background: black;
-  color: white;
-  font-family: Arial, sans-serif;
-  text-align: center;
+body { margin:0; background:black; overflow:hidden; }
+#player {
+  width: 40px;
+  height: 40px;
+  background: cyan;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
 }
-
-.container {
-  margin-top: 150px;
-}
-
-button {
-  padding: 20px 40px;
-  font-size: 20px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  background: white;
-  color: black;
-  margin-top: 20px;
+.enemy {
+  width: 30px;
+  height: 30px;
+  background: red;
+  position: absolute;
+  top: 0;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-  <h1>🚀 클릭 점수 게임</h1>
-  <p>10초 동안 최대한 많이 클릭하세요!</p>
-
-  <h2>점수: <span id="score">0</span></h2>
-  <h3>남은 시간: <span id="time">10</span>초</h3>
-
-  <button onclick="clickGame()">클릭!</button>
-</div>
+<div id="player"></div>
 
 <script>
-let score = 0;
-let timeLeft = 10;
-let gameStarted = false;
+const player = document.getElementById("player");
 
-function clickGame() {
-  if (!gameStarted) return;
-  score++;
-  document.getElementById("score").innerText = score;
-}
+document.addEventListener("mousemove", e=>{
+  player.style.left = e.pageX + "px";
+});
 
-function startGame() {
-  gameStarted = true;
+function spawnEnemy(){
+  let enemy = document.createElement("div");
+  enemy.className = "enemy";
+  enemy.style.left = Math.random()*window.innerWidth + "px";
+  document.body.appendChild(enemy);
 
-  let timer = setInterval(function() {
-    timeLeft--;
-    document.getElementById("time").innerText = timeLeft;
-
-    if (timeLeft <= 0) {
-      clearInterval(timer);
-      gameStarted = false;
-      alert("게임 끝! 점수: " + score);
+  let fall = setInterval(()=>{
+    enemy.style.top = enemy.offsetTop + 5 + "px";
+    if(enemy.offsetTop > window.innerHeight){
+      clearInterval(fall);
+      enemy.remove();
     }
-  }, 1000);
+  },30);
 }
-
-startGame();
+setInterval(spawnEnemy,1000);
 </script>
 
 </body>
