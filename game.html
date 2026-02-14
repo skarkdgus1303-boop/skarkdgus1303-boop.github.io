@@ -50,7 +50,6 @@ button:hover{
   height:40px;
   background:cyan;
   position:absolute;
-  bottom:10px;
 }
 
 .enemy{
@@ -121,7 +120,7 @@ function startShooting(){
   player.className="player";
   gameArea.appendChild(player);
 
-  // 중앙 초기 위치
+  // 중앙 하단 초기 위치
   player.style.left=(gameArea.offsetWidth/2 - 20)+"px";
   player.style.top=(gameArea.offsetHeight - 50)+"px";
 
@@ -189,6 +188,7 @@ function startDodge(){
   player.className="player";
   gameArea.appendChild(player);
 
+  // 중앙 하단 초기 위치
   player.style.left=(gameArea.offsetWidth/2 - 20)+"px";
   player.style.top=(gameArea.offsetHeight - 50)+"px";
 
@@ -204,16 +204,19 @@ function startDodge(){
     let enemy=document.createElement("div");
     enemy.className="enemy";
     enemy.style.left=Math.random()*(gameArea.offsetWidth-30)+"px";
+    enemy.style.top="0px";
     gameArea.appendChild(enemy);
 
     let fall=setInterval(()=>{
       enemy.style.top=(enemy.offsetTop+7)+"px";
+
       if(enemy.offsetTop+30>player.offsetTop &&
          enemy.offsetLeft<player.offsetLeft+40 &&
          enemy.offsetLeft+30>player.offsetLeft){
         alert("💥 게임오버!");
         location.reload();
       }
+
       if(enemy.offsetTop>gameArea.offsetHeight){
         enemy.remove();
         clearInterval(fall);
