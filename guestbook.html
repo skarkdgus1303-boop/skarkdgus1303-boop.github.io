@@ -3,26 +3,113 @@
 <head>
 <meta charset="UTF-8">
 <title>방명록</title>
+<style>
+body{
+  font-family: Arial;
+  background:#111;
+  color:#fff;
+  text-align:center;
+  margin:0;
+  padding:20px;
+}
+
+h1{
+  color:cyan;
+}
+
+#guestForm input{
+  padding:10px;
+  width:300px;
+  font-size:16px;
+}
+
+#guestForm button{
+  padding:10px 20px;
+  font-size:16px;
+  margin-left:10px;
+  cursor:pointer;
+  border:2px solid cyan;
+  background:transparent;
+  color:cyan;
+}
+
+#guestForm button:hover{
+  background:cyan;
+  color:black;
+}
+
+#guestList{
+  margin-top:30px;
+  max-width:500px;
+  margin-left:auto;
+  margin-right:auto;
+  text-align:left;
+}
+
+.guestItem{
+  background:#222;
+  margin:5px 0;
+  padding:10px;
+  border-left:5px solid cyan;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.deleteBtn{
+  background:red;
+  border:none;
+  color:white;
+  padding:5px 10px;
+  cursor:pointer;
+}
+
+.deleteBtn:hover{
+  background:#ff5555;
+}
+</style>
 </head>
-<body style="background:black;color:white;text-align:center;">
+<body>
 
 <h1>📝 방명록</h1>
 
-<input id="msg" placeholder="메시지 입력">
-<button onclick="addMsg()">등록</button>
+<div id="guestForm">
+  <input type="text" id="guestInput" placeholder="방명록에 글을 남겨보세요">
+  <button onclick="addGuest()">등록</button>
+</div>
 
-<ul id="list"></ul>
+<div id="guestList"></div>
 
 <script>
-function addMsg(){
-  let msg = document.getElementById("msg").value;
-  let li = document.createElement("li");
-  li.innerText = msg;
-  document.getElementById("list").appendChild(li);
+let guestArray = [];
+
+function addGuest(){
+  let input = document.getElementById("guestInput");
+  let text = input.value.trim();
+  if(text === "") return alert("내용을 입력하세요.");
+
+  // 배열에 저장
+  guestArray.push(text);
+  input.value = "";
+  renderGuests();
+}
+
+function deleteGuest(index){
+  guestArray.splice(index,1);
+  renderGuests();
+}
+
+function renderGuests(){
+  let list = document.getElementById("guestList");
+  list.innerHTML = "";
+  guestArray.forEach((text,index)=>{
+    let div = document.createElement("div");
+    div.className = "guestItem";
+    div.innerHTML = `<span>${text}</span> <button class="deleteBtn" onclick="deleteGuest(${index})">삭제</button>`;
+    list.appendChild(div);
+  });
 }
 </script>
-
-<a href="index.html">← 홈으로</a>
 
 </body>
 </html>
