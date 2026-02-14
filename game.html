@@ -73,6 +73,23 @@ button:hover{
   position:absolute;
   cursor:pointer;
 }
+
+/* 게임오버 레이어 */
+#gameOverMsg {
+  display:none;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:red;
+  color:white;
+  padding:20px 40px;
+  font-size:30px;
+  border:3px solid yellow;
+  z-index:1000;
+  text-align:center;
+  cursor:pointer;
+}
 </style>
 </head>
 
@@ -91,6 +108,9 @@ button:hover{
 
 <div id="scoreDisplay">점수: 0</div>
 <div id="gameArea"></div>
+
+<!-- 게임오버 메시지 -->
+<div id="gameOverMsg">💥 게임오버!<br>클릭하면 계속</div>
 
 <script>
 let gameArea = document.getElementById("gameArea");
@@ -111,6 +131,14 @@ function clearGame(){
   if(moveInterval) clearInterval(moveInterval);
   document.onmousemove=null;
   document.onclick=null;
+  document.getElementById("gameOverMsg").style.display="none";
+}
+
+/* 게임오버 레이어 표시 */
+function showGameOver(){
+  let msg=document.getElementById("gameOverMsg");
+  msg.style.display="block";
+  msg.onclick=()=>{ msg.style.display="none"; };
 }
 
 /* ================== 슈팅 게임 ================== */
@@ -207,8 +235,8 @@ function startDodge(){
       if(enemy.offsetTop+30>player.offsetTop &&
          enemy.offsetLeft<player.offsetLeft+40 &&
          enemy.offsetLeft+30>player.offsetLeft){
-        alert("💥 게임오버!");
-        location.reload();
+        showGameOver();
+        clearInterval(fall);
       }
 
       if(enemy.offsetTop>gameArea.offsetHeight){
@@ -294,14 +322,14 @@ function startSpeedDodge(){
       if(enemy.offsetTop+30>player.offsetTop &&
          enemy.offsetLeft<player.offsetLeft+40 &&
          enemy.offsetLeft+30>player.offsetLeft){
-        alert("💥 게임오버!");
-        location.reload();
+        showGameOver();
+        clearInterval(fall);
       }
 
       if(enemy.offsetTop>gameArea.offsetHeight){
         enemy.remove();
         clearInterval(fall);
-        speed += 0.5; // 점점 빨라짐
+        speed += 0.5;
       }
     },30);
   },800);
