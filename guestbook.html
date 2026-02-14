@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>방명록</title>
+</head>
+<body style="background:black;color:white;text-align:center;">
+
+<h1>📝 방명록</h1>
+
+<input id="msg" placeholder="메시지 입력">
+<button onclick="addMsg()">등록</button>
+
+<ul id="list"></ul>
+
+<script>
+function addMsg(){
+  let msg = document.getElementById("msg").value;
+  let li = document.createElement("li");
+  li.innerText = msg;
+  document.getElementById("list").appendChild(li);
+}
+</script>
+
+<a href="index.html">← 홈으로</a>
+
+</body>
+</html>
