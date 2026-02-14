@@ -7,16 +7,31 @@
 <style>
 body {
   margin: 0;
-  background: radial-gradient(circle at top, #050816, #000000);
+  overflow: hidden;
+  background: black;
   color: white;
   font-family: Arial, sans-serif;
   text-align: center;
 }
 
+/* 별 */
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+  from { opacity: 0.2; }
+  to { opacity: 1; }
+}
+
 /* 네온 제목 */
 h1 {
-  margin-top: 150px;
-  font-size: 40px;
+  margin-top: 200px;
+  font-size: 45px;
   color: #00f7ff;
   text-shadow:
     0 0 5px #00f7ff,
@@ -24,11 +39,60 @@ h1 {
     0 0 20px #00f7ff,
     0 0 40px #008cff;
 }
+
+/* 버튼 */
+button {
+  margin-top: 30px;
+  padding: 12px 25px;
+  font-size: 18px;
+  background: transparent;
+  border: 2px solid #00f7ff;
+  color: #00f7ff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #00f7ff;
+  color: black;
+}
 </style>
 </head>
 
 <body>
-  <h1>🚀 남강현의 우주 사이트 🚀</h1>
-  <p>GitHub Pages 정상 작동 중!</p>
+
+<h1 id="title"></h1>
+
+<button onclick="startGame()">🎮 게임 시작</button>
+
+<script>
+/* 타이핑 효과 */
+const text = "🚀 남강현의 우주 사이트 🚀";
+let i = 0;
+function typeEffect() {
+  if (i < text.length) {
+    document.getElementById("title").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typeEffect, 80);
+  }
+}
+typeEffect();
+
+/* 별 생성 */
+for (let i = 0; i < 200; i++) {
+  let star = document.createElement("div");
+  star.className = "star";
+  star.style.top = Math.random() * window.innerHeight + "px";
+  star.style.left = Math.random() * window.innerWidth + "px";
+  star.style.animationDuration = (Math.random() * 3) + "s";
+  document.body.appendChild(star);
+}
+
+/* 게임 */
+function startGame() {
+  alert("🚀 우주 모험 시작!");
+}
+</script>
+
 </body>
 </html>
