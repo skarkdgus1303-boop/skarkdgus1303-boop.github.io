@@ -2,103 +2,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>남강현의 우주 사이트</title>
-
-<style>
-body {
-  margin: 0;
-  background: radial-gradient(circle at top, #050816, #000000);
-  color: white;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  overflow-x: hidden;
-}
-
-/* 별 */
-.star {
-  position: fixed;
-  width: 2px;
-  height: 2px;
-  background: white;
-  animation: twinkle 2s infinite alternate;
-}
-
-@keyframes twinkle {
-  from { opacity: 0.2; }
-  to { opacity: 1; }
-}
-
-/* 유성 */
-.shooting-star {
-  position: fixed;
-  width: 3px;
-  height: 3px;
-  background: white;
-  box-shadow: 0 0 10px white;
-  animation: shoot 1s linear forwards;
-}
-
-@keyframes shoot {
-  from { transform: translate(0,0); opacity: 1; }
-  to { transform: translate(300px,300px); opacity: 0; }
-}
-
-/* 행성 */
-.planet {
-  position: fixed;
-  width: 80px;
-  height: 80px;
-  background: radial-gradient(circle, #00f7ff, #003366);
-  border-radius: 50%;
-  top: 20%;
-  left: 10%;
-  animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%,100% { transform: translateY(0px); }
-  50% { transform: translateY(20px); }
-}
-
-/* 제목 */
-h1 {
-  margin-top: 200px;
-  font-size: 45px;
-  color: #00f7ff;
-  text-shadow:
-    0 0 5px #00f7ff,
-    0 0 10px #00f7ff,
-    0 0 20px #00f7ff,
-    0 0 40px #008cff;
-}
-
-/* 버튼 */
-button {
-  margin-top: 30px;
-  padding: 12px 25px;
-  font-size: 18px;
-  background: transparent;
-  border: 2px solid #00f7ff;
-  color: #00f7ff;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-button:hover {
-  background: #00f7ff;
-  color: black;
-}
-
-/* 마우스 빛 */
-.cursor-light {
-  position: fixed;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  pointer-events: none;
-  background: radial-gradient(circle, rgba(0,247,255,0.8), transparent);
-}
-</style>
+<title>남강현 유니버스</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -107,59 +12,13 @@ button:hover {
 <div class="cursor-light" id="light"></div>
 
 <h1 id="title"></h1>
-<button onclick="startGame()">🎮 클릭 게임 시작</button>
 
-<p style="margin-top:600px;">🚀 스크롤 테스트 구역</p>
+<div class="menu">
+  <a href="game.html">🎮 게임</a>
+  <a href="portfolio.html">💼 포트폴리오</a>
+  <a href="guestbook.html">📝 방명록</a>
+</div>
 
-<script>
-
-/* 타이핑 효과 */
-const text = "🚀 남강현의 전설 우주 사이트 🚀";
-let i = 0;
-function typeEffect() {
-  if (i < text.length) {
-    document.getElementById("title").innerHTML += text.charAt(i);
-    i++;
-    setTimeout(typeEffect, 80);
-  }
-}
-typeEffect();
-
-/* 별 생성 */
-for (let i = 0; i < 150; i++) {
-  let star = document.createElement("div");
-  star.className = "star";
-  star.style.top = Math.random() * window.innerHeight + "px";
-  star.style.left = Math.random() * window.innerWidth + "px";
-  star.style.animationDuration = (Math.random() * 3) + "s";
-  document.body.appendChild(star);
-}
-
-/* 유성 생성 */
-setInterval(() => {
-  let star = document.createElement("div");
-  star.className = "shooting-star";
-  star.style.top = Math.random() * window.innerHeight + "px";
-  star.style.left = Math.random() * window.innerWidth + "px";
-  document.body.appendChild(star);
-  setTimeout(() => star.remove(), 1000);
-}, 3000);
-
-/* 마우스 빛 */
-document.addEventListener("mousemove", (e) => {
-  const light = document.getElementById("light");
-  light.style.left = e.pageX - 10 + "px";
-  light.style.top = e.pageY - 10 + "px";
-});
-
-/* 클릭 게임 */
-let score = 0;
-function startGame() {
-  score++;
-  alert("점수: " + score);
-}
-
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
