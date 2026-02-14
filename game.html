@@ -53,6 +53,13 @@ button:hover{
   position:absolute;
 }
 
+.bullet{
+  width:5px;
+  height:15px;
+  background:white;
+  position:absolute;
+}
+
 .target{
   width:30px;
   height:30px;
@@ -67,7 +74,6 @@ button:hover{
 
 <h1>🎮 우주 게임 센터 🎮</h1>
 
-<!-- 게임 선택 버튼 -->
 <div id="menu">
   <button onclick="startShooting()">🛸 슈팅 게임</button>
   <button onclick="startDodge()">🧱 피하기 게임</button>
@@ -76,42 +82,99 @@ button:hover{
   <a href="index.html"><button>🏠 홈으로</button></a>
 </div>
 
-<!-- 게임 화면 영역 -->
 <div id="gameArea"></div>
 
 <script>
 let gameArea = document.getElementById("gameArea");
+let score = 0;
+let enemyInterval;
+let moveInterval;
+let bullets = [];
 
 /* 게임 초기화 */
 function clearGame(){
   gameArea.innerHTML="";
+  score=0;
+  document.title="우주 게임 센터";
+  bullets = [];
+  if(enemyInterval) clearInterval(enemyInterval);
+  if(moveInterval) clearInterval(moveInterval);
 }
 
 /* ================== 슈팅 게임 ================== */
 function startShooting(){
   clearGame();
+  
   let player = document.createElement("div");
   player.className="player";
   gameArea.appendChild(player);
 
+  // 플레이어 마우스 이동
   document.onmousemove = e=>{
-    player.style.left = e.pageX + "px";
+    let x = e.pageX - 20; // 중앙 기준
+    if(x < 0) x=0;
+    if(x>window.innerWidth-40) x=window.innerWidth-40;
+    player.style.left = x + "px";
   }
 
-  setInterval(()=>{
+  // 총알 발사
+  document.onclick = ()=>{
+    let bullet = document.createElement("div");
+    bullet.className="bullet";
+    bullet.style.left = (player.offsetLeft + 18) + "px";
+    bullet.style.top = (player.offsetTop - 15) + "px";
+    gameArea.appendChild(bullet);
+    bullets.push(bullet);
+  }
+
+  // 적 생성
+  enemyInterval = setInterval(()=>{
     let enemy = document.createElement("div");
     enemy.className="enemy";
-    enemy.style.left=Math.random()*window.innerWidth+"px";
+    enemy.style.left = Math.random()*(window.innerWidth-30) + "px";
+    enemy.style.top = "0px";
     gameArea.appendChild(enemy);
+  }, 1000);
 
-    let fall=setInterval(()=>{
-      enemy.style.top=(enemy.offsetTop+5)+"px";
-      if(enemy.offsetTop>window.innerHeight){
+  // 게임 루프
+  moveInterval = setInterval(()=>{
+    // 적 이동
+    let enemies = document.querySelectorAll(".enemy");
+    enemies.forEach(enemy=>{
+      enemy.style.top = (enemy.offsetTop + 5) + "px";
+
+      // 화면 아래로 나가면 삭제
+      if(enemy.offsetTop > window.innerHeight){
         enemy.remove();
-        clearInterval(fall);
       }
-    },30);
-  },1000);
+
+      // 총알 충돌 체크
+      bullets.forEach((bullet, i)=>{
+        if(
+          bullet.offsetTop < enemy.offsetTop + 30 &&
+          bullet.offsetTop + 15 > enemy.offsetTop &&
+          bullet.offsetLeft < enemy.offsetLeft + 30 &&
+          bullet.offsetLeft + 5 > enemy.offsetLeft
+        ){
+          enemy.remove();
+          bullet.remove();
+          bullets.splice(i,1);
+          score++;
+          document.title = "점수: "+score;
+        }
+      });
+    });
+
+    // 총알 이동
+    bullets.forEach((bullet, i)=>{
+      bullet.style.top = (bullet.offsetTop - 10) + "px";
+      if(bullet.offsetTop < 0){
+        bullet.remove();
+        bullets.splice(i,1);
+      }
+    });
+
+  }, 30);
 }
 
 /* ================== 피하기 게임 ================== */
@@ -122,13 +185,16 @@ function startDodge(){
   gameArea.appendChild(player);
 
   document.onmousemove = e=>{
-    player.style.left = e.pageX + "px";
+    let x = e.pageX - 20;
+    if(x < 0) x=0;
+    if(x>window.innerWidth-40) x=window.innerWidth-40;
+    player.style.left = x + "px";
   }
 
-  setInterval(()=>{
+  enemyInterval = setInterval(()=>{
     let enemy = document.createElement("div");
     enemy.className="enemy";
-    enemy.style.left=Math.random()*window.innerWidth+"px";
+    enemy.style.left=Math.random()*(window.innerWidth-30)+"px";
     gameArea.appendChild(enemy);
 
     let fall=setInterval(()=>{
@@ -154,18 +220,18 @@ function startDodge(){
 /* ================== 클릭 게임 ================== */
 function startClick(){
   clearGame();
-  let score=0;
+  let scoreClick = 0;
 
-  setInterval(()=>{
+  enemyInterval = setInterval(()=>{
     let target=document.createElement("div");
     target.className="target";
-    target.style.left=Math.random()*window.innerWidth+"px";
-    target.style.top=Math.random()*window.innerHeight+"px";
+    target.style.left=Math.random()*(window.innerWidth-30)+"px";
+    target.style.top=Math.random()*(window.innerHeight-30)+"px";
 
     target.onclick=()=>{
-      score++;
+      scoreClick++;
       target.remove();
-      document.title="점수: "+score;
+      document.title="점수: "+scoreClick;
     }
 
     gameArea.appendChild(target);
