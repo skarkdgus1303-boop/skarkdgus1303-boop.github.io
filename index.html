@@ -1,124 +1,178 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
 <title>사이버 우주</title>
 <style>
-body {
-  margin: 0;
-  overflow: hidden;
-  background: radial-gradient(circle at center, #0a0f2c, #000814, #000000);
-  font-family: Arial, sans-serif;
-  cursor: none;
-  perspective: 800px;
-  transition: transform 0.05s ease;
-}
+  /* ===== 기본 & 중앙 정렬 ===== */
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: radial-gradient(circle at center, #0a0f2c, #000814, #000000);
+    font-family: Arial, sans-serif;
+    cursor: none;
+    perspective: 800px;
 
-/* 별 레이어 3개 */
-.star-layer {
-  position: fixed;
-  width: 200%;
-  height: 200%;
-  top: -50%;
-  left: -50%;
-  background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
-  animation: moveStars linear infinite;
-}
-.star-layer:nth-child(1) { animation-duration: 100s; opacity:0.2; }
-.star-layer:nth-child(2) { animation-duration: 150s; opacity:0.15; }
-.star-layer:nth-child(3) { animation-duration: 200s; opacity:0.1; }
-@keyframes moveStars { from { transform: translate3d(0,0,0); } to { transform: translate3d(-800px,-800px,0); } }
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
 
-/* 유성 */
-.shooting-star {
-  position: absolute;
-  width: 200px;
-  height: 2px;
-  background: linear-gradient(90deg, white, transparent);
-  animation: shoot 5s linear forwards;
-  filter: drop-shadow(0 0 6px cyan);
-}
-@keyframes shoot { 0%{opacity:1;transform:translateX(0) translateY(0) rotate(20deg);} 100%{opacity:0;transform:translateX(1500px) translateY(400px) rotate(20deg);} }
+  /* ===== 별 레이어 3개 ===== */
+  .star-layer {
+    position: fixed;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+    animation: moveStars linear infinite;
+    pointer-events: none;
+  }
+  .star-layer:nth-child(1) { animation-duration: 100s; opacity: 0.2; z-index:1;}
+  .star-layer:nth-child(2) { animation-duration: 150s; opacity: 0.15; z-index:2;}
+  .star-layer:nth-child(3) { animation-duration: 200s; opacity: 0.1; z-index:3;}
+  @keyframes moveStars {
+    from { transform: translate3d(0,0,0); }
+    to { transform: translate3d(-800px,-800px,0); }
+  }
 
-/* 떠다니는 행성 */
-.planet {
-  position: absolute;
-  top:20%;
-  left:70%;
-  width:200px;
-  height:200px;
-  background: radial-gradient(circle at 30% 30%, #00ffff, #003366);
-  border-radius:50%;
-  box-shadow:0 0 100px cyan,inset 0 0 50px #0ff;
-  animation: floatPlanet 6s ease-in-out infinite alternate;
-  transform-style: preserve-3d;
-}
-@keyframes floatPlanet { 0%{transform:translateY(0) rotateY(0deg);}50%{transform:translateY(40px) rotateY(45deg);}100%{transform:translateY(0) rotateY(0deg);} }
+  /* ===== 유성 ===== */
+  .shooting-star {
+    position: absolute;
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(90deg, white, transparent);
+    animation: shoot 5s linear forwards;
+    filter: drop-shadow(0 0 6px cyan);
+    pointer-events: none;
+  }
+  @keyframes shoot {
+    0% { opacity: 1; transform: translateX(0) translateY(0) rotate(20deg); }
+    100% { opacity: 0; transform: translateX(1500px) translateY(400px) rotate(20deg); }
+  }
 
-/* 제목 */
-#title {
-  margin-top:100px;
-  font-size:50px;
-  color:#00fff7;
-  animation: neonTitle 2s ease-in-out infinite alternate;
-  text-shadow:0 0 10px #00fff7,0 0 20px #00fff7,0 0 40px #00fff7,0 0 100px #0ff;
-}
-@keyframes neonTitle {0%,100%{text-shadow:0 0 10px #00fff7,0 0 20px #00fff7,0 0 40px #00fff7,0 0 100px #0ff;}50%{text-shadow:0 0 20px #0ff,0 0 40px #0ff,0 0 60px #0ff,0 0 120px #0ff;}}
+  /* ===== 떠다니는 행성 ===== */
+  .planet {
+    position: absolute;
+    top: 20%;
+    left: 70%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle at 30% 30%, #00ffff, #003366);
+    border-radius: 50%;
+    box-shadow: 0 0 100px cyan, inset 0 0 50px #0ff;
+    animation: floatPlanet 6s ease-in-out infinite alternate;
+    transform-style: preserve-3d;
+    pointer-events: none;
+  }
+  @keyframes floatPlanet {
+    0% { transform: translateY(0) rotateY(0deg); }
+    50% { transform: translateY(40px) rotateY(45deg); }
+    100% { transform: translateY(0) rotateY(0deg); }
+  }
 
-/* 작은 글씨 */
-.subtitle {
-  font-size:14px;
-  opacity:0;
-  margin-top:-15px;
-  letter-spacing:3px;
-  text-transform:uppercase;
-  animation: fadeIn 2s ease forwards;
-  animation-delay:0.5s;
-}
-@keyframes fadeIn { to{opacity:0.7;} }
+  /* ===== 제목 ===== */
+  #title {
+    font-size: 50px;
+    color: #00fff7;
+    animation: neonTitle 2s ease-in-out infinite alternate;
+    text-shadow: 0 0 10px #00fff7, 0 0 20px #00fff7, 0 0 40px #00fff7, 0 0 100px #0ff;
+    margin: 0;
+  }
+  @keyframes neonTitle {
+    0%, 100% {
+      text-shadow: 0 0 10px #00fff7, 0 0 20px #00fff7, 0 0 40px #00fff7, 0 0 100px #0ff;
+    }
+    50% {
+      text-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff, 0 0 120px #0ff;
+    }
+  }
 
-/* 버튼 메뉴 */
-.menu { margin-top:60px; display:flex; justify-content:center; gap:35px; }
-.menu a {
-  display:inline-block;
-  padding:12px 28px;
-  background:rgba(0,255,255,0.1);
-  border-radius:12px;
-  color:white;
-  text-decoration:none;
-  font-size:18px;
-  font-weight:bold;
-  transition:0.3s;
-  cursor:pointer;
-  user-select:none;
-  box-shadow:0 0 10px rgba(0,255,255,0.4);
-  animation: neonGlow 3s ease-in-out infinite;
-}
-.menu a:hover { background:cyan; color:black; transform:scale(1.1); box-shadow:0 0 25px cyan; }
-@keyframes neonGlow {0%,100%{box-shadow:0 0 5px #00fff7,0 0 10px #00fff7,0 0 20px #00fff7;}50%{box-shadow:0 0 15px #0ff,0 0 25px #0ff,0 0 35px #0ff;}}
+  /* ===== 작은 글씨 ===== */
+  .subtitle {
+    font-size: 14px;
+    opacity: 0;
+    margin: 10px 0 30px 0;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    animation: fadeIn 2s ease forwards;
+    animation-delay: 0.5s;
+    color: #999;
+  }
+  @keyframes fadeIn {
+    to { opacity: 0.7; }
+  }
 
-/* 커서 */
-.cursor-light {
-  position: fixed;
-  width: 30px; height:30px; border-radius:50%;
-  pointer-events:none;
-  background: rgba(0,255,255,0.5);
-  box-shadow:0 0 25px rgba(0,255,255,0.9);
-  transform: translate(-50%,-50%);
-  transition: transform 0.03s linear;
-}
+  /* ===== 버튼 메뉴 ===== */
+  .menu {
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    margin-bottom: 40px;
+  }
+  .menu a {
+    display: inline-block;
+    padding: 12px 28px;
+    background: rgba(0, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+    animation: neonGlow 3s ease-in-out infinite;
+    text-shadow: 0 0 5px #00fff7;
+  }
+  .menu a:hover {
+    background: cyan;
+    color: black;
+    transform: scale(1.1);
+    box-shadow: 0 0 25px cyan;
+  }
+  @keyframes neonGlow {
+    0%, 100% {
+      box-shadow: 0 0 5px #00fff7, 0 0 10px #00fff7, 0 0 20px #00fff7;
+    }
+    50% {
+      box-shadow: 0 0 15px #0ff, 0 0 25px #0ff, 0 0 35px #0ff;
+    }
+  }
 
-/* 별 파티클 */
-.star {
-  position:absolute;
-  width:4px; height:4px;
-  background:white;
-  border-radius:50%;
-  pointer-events:none;
-  opacity:1;
-  animation: explode 0.8s ease-out forwards;
-}
-@keyframes explode { to{ transform:translate(var(--x),var(--y)) scale(0); opacity:0; } }
+  /* ===== 마우스 커서 네온 ===== */
+  .cursor-light {
+    position: fixed;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: rgba(0, 255, 255, 0.5);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.9);
+    transform: translate(-50%, -50%);
+    transition: transform 0.03s linear;
+    z-index: 1000;
+  }
+
+  /* ===== 별 파티클 ===== */
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 1;
+    animation: explode 0.8s ease-out forwards;
+  }
+  @keyframes explode {
+    to {
+      transform: translate(var(--x), var(--y)) scale(0);
+      opacity: 0;
+    }
+  }
 </style>
 </head>
 <body>
@@ -144,53 +198,66 @@ body {
 </div>
 
 <script>
-const cursor=document.getElementById('light');
-document.addEventListener('mousemove',e=>{
-  cursor.style.transform=`translate(${e.clientX}px,${e.clientY}px)`;
-  // 마우스 파티클
-  const star=document.createElement('div');
+const cursor = document.getElementById('light');
+
+document.addEventListener('mousemove', e => {
+  cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+
+  // 마우스 따라 별 파티클 생성
+  const star = document.createElement('div');
   star.classList.add('star');
-  star.style.left=e.clientX+'px';
-  star.style.top=e.clientY+'px';
-  const angle=Math.random()*2*Math.PI;
-  const distance=Math.random()*50+10;
-  star.style.setProperty('--x',`${Math.cos(angle)*distance}px`);
-  star.style.setProperty('--y',`${Math.sin(angle)*distance}px`);
-  star.style.width=star.style.height=(Math.random()*3+2)+'px';
+  star.style.left = e.clientX + 'px';
+  star.style.top = e.clientY + 'px';
+
+  const angle = Math.random() * 2 * Math.PI;
+  const distance = Math.random() * 50 + 10;
+  star.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
+  star.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
+
+  const size = Math.random() * 3 + 2;
+  star.style.width = star.style.height = `${size}px`;
+
   document.body.appendChild(star);
-  setTimeout(()=>star.remove(),500);
+  setTimeout(() => star.remove(), 500);
 });
 
-// 클릭 별 폭발 + 화면 흔들림
-document.addEventListener('click', e=>{
-  for(let i=0;i<25;i++){
-    const star=document.createElement('div');
+// 클릭 시 별 폭발 및 화면 흔들림 효과
+document.addEventListener('click', e => {
+  for (let i = 0; i < 25; i++) {
+    const star = document.createElement('div');
     star.classList.add('star');
-    star.style.left=e.clientX+'px';
-    star.style.top=e.clientY+'px';
-    const angle=Math.random()*2*Math.PI;
-    const distance=Math.random()*100+30;
-    star.style.setProperty('--x',`${Math.cos(angle)*distance}px`);
-    star.style.setProperty('--y',`${Math.sin(angle)*distance}px`);
-    star.style.width=star.style.height=(Math.random()*4+3)+'px';
+    star.style.left = e.clientX + 'px';
+    star.style.top = e.clientY + 'px';
+
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = Math.random() * 100 + 30;
+    star.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
+    star.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
+
+    const size = Math.random() * 4 + 3;
+    star.style.width = star.style.height = `${size}px`;
+
     document.body.appendChild(star);
-    setTimeout(()=>star.remove(),800);
+    setTimeout(() => star.remove(), 800);
   }
-  // 화면 흔들림
-  document.body.style.transform=`translate(${Math.random()*10-5}px,${Math.random()*10-5}px)`;
-  setTimeout(()=>{document.body.style.transform='translate(0,0)';},100);
+
+  // 화면 흔들림 효과
+  document.body.style.transform = `translate(${Math.random() * 10 - 5}px, ${Math.random() * 10 - 5}px)`;
+  setTimeout(() => {
+    document.body.style.transform = 'translate(0, 0)';
+  }, 100);
 });
 
-// 랜덤 유성
-function spawnMeteor(){
-  const meteor=document.createElement('div');
+// 랜덤 유성 생성 함수
+function spawnMeteor() {
+  const meteor = document.createElement('div');
   meteor.classList.add('shooting-star');
-  meteor.style.top=Math.random()*50+'%';
-  meteor.style.left='-200px';
+  meteor.style.top = Math.random() * 50 + '%';
+  meteor.style.left = '-200px';
   document.body.appendChild(meteor);
-  setTimeout(()=>meteor.remove(),5000);
+  setTimeout(() => meteor.remove(), 5000);
 }
-setInterval(spawnMeteor,2500);
+setInterval(spawnMeteor, 2500);
 </script>
 
 </body>
