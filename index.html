@@ -13,7 +13,7 @@ body {
   color: white;
   text-align: center;
   font-family: Arial, sans-serif;
-  cursor: none; /* 커서 숨김 */
+  cursor: none;
 }
 
 /* ===== 별 배경 ===== */
@@ -44,14 +44,8 @@ body::before {
 }
 
 @keyframes shoot {
-  0% {
-    transform: translateX(0) translateY(0) rotate(20deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(1500px) translateY(300px) rotate(20deg);
-    opacity: 0;
-  }
+  0% { transform: translateX(0) translateY(0) rotate(20deg); opacity: 1; }
+  100% { transform: translateX(1500px) translateY(300px) rotate(20deg); opacity: 0; }
 }
 
 /* ===== 떠다니는 행성 ===== */
@@ -78,28 +72,12 @@ body::before {
   font-size: 48px;
   color: #00fff7;
   animation: neonTitle 2s ease-in-out infinite alternate;
-  text-shadow:
-      0 0 10px #00fff7,
-      0 0 20px #00fff7,
-      0 0 40px #00fff7,
-      0 0 80px #00fff7;
+  text-shadow: 0 0 10px #00fff7, 0 0 20px #00fff7, 0 0 40px #00fff7, 0 0 80px #00fff7;
 }
 
 @keyframes neonTitle {
-  0%,100% {
-    text-shadow:
-      0 0 10px #00fff7,
-      0 0 20px #00fff7,
-      0 0 40px #00fff7,
-      0 0 80px #00fff7;
-  }
-  50% {
-    text-shadow:
-      0 0 20px #0ff,
-      0 0 40px #0ff,
-      0 0 60px #0ff,
-      0 0 100px #0ff;
-  }
+  0%,100% { text-shadow:0 0 10px #00fff7,0 0 20px #00fff7,0 0 40px #00fff7,0 0 80px #00fff7; }
+  50% { text-shadow:0 0 20px #0ff,0 0 40px #0ff,0 0 60px #0ff,0 0 100px #0ff; }
 }
 
 /* ===== 작은 간지 문구 ===== */
@@ -113,9 +91,7 @@ body::before {
   animation-delay: 0.5s;
 }
 
-@keyframes fadeIn {
-  to { opacity: 0.7; }
-}
+@keyframes fadeIn { to { opacity: 0.7; } }
 
 /* ===== 버튼식 가로 메뉴 ===== */
 .menu {
@@ -148,12 +124,8 @@ body::before {
 }
 
 @keyframes neonGlow {
-  0%, 100% {
-    box-shadow: 0 0 5px #00fff7, 0 0 10px #00fff7, 0 0 20px #00fff7;
-  }
-  50% {
-    box-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
-  }
+  0%,100% { box-shadow:0 0 5px #00fff7,0 0 10px #00fff7,0 0 20px #00fff7; }
+  50% { box-shadow:0 0 10px #0ff,0 0 20px #0ff,0 0 30px #0ff; }
 }
 
 /* ===== 마우스 커서 네온 ===== */
@@ -167,6 +139,25 @@ body::before {
   box-shadow: 0 0 20px rgba(0,255,255,0.8);
   transform: translate(-50%, -50%);
   transition: transform 0.05s linear;
+}
+
+/* ===== 별 폭발 ===== */
+.star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 1;
+  animation: explode 0.8s ease-out forwards;
+}
+
+@keyframes explode {
+  to {
+    transform: translate(var(--x), var(--y)) scale(0);
+    opacity: 0;
+  }
 }
 </style>
 
@@ -190,11 +181,37 @@ body::before {
 </div>
 
 <script>
-  // 마우스 따라 네온 커서
   const cursor = document.getElementById('light');
   document.addEventListener('mousemove', e => {
     cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
   });
+
+  // 클릭하면 별 폭발
+  document.addEventListener('click', e => {
+    for(let i=0; i<15; i++){
+      const star = document.createElement('div');
+      star.classList.add('star');
+      star.style.left = e.clientX+'px';
+      star.style.top = e.clientY+'px';
+      const angle = Math.random()*2*Math.PI;
+      const distance = Math.random()*80+20;
+      star.style.setProperty('--x', `${Math.cos(angle)*distance}px`);
+      star.style.setProperty('--y', `${Math.sin(angle)*distance}px`);
+      document.body.appendChild(star);
+      setTimeout(()=> star.remove(), 800);
+    }
+  });
+
+  // 랜덤 유성 생성
+  function spawnMeteor() {
+    const meteor = document.createElement('div');
+    meteor.classList.add('shooting-star');
+    meteor.style.top = Math.random()*50 + '%';
+    meteor.style.left = '-200px';
+    document.body.appendChild(meteor);
+    setTimeout(()=> meteor.remove(), 5000);
+  }
+  setInterval(spawnMeteor, 4000);
 </script>
 
 </body>
