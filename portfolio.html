@@ -3,12 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <title>포트폴리오</title>
-<link rel="stylesheet" href="style.css">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 40px;
+    background: #121212;
+    color: white;
+    text-align: center;
+  }
+
+  h1 {
+    margin-bottom: 20px;
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff;
+  }
+
+  p {
+    font-size: 20px;
+    margin: 10px 0;
+  }
+
+  /* 깜빡이는 애니메이션 */
+  .blink {
+    font-weight: bold;
+    color: #ff3c00;
+    animation: blinkAnimation 1.2s infinite;
+    text-shadow: 0 0 8px #ff3c00;
+  }
+
+  @keyframes blinkAnimation {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  a {
+    display: inline-block;
+    margin-top: 30px;
+    font-size: 18px;
+    color: #00ffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  a:hover {
+    color: #ff3c00;
+  }
+</style>
 </head>
 <body>
-<h1>포트폴리오</h1>
-<p>HTML / CSS / JavaScript</p>
-<p>점검중이니 잠시만 기다려주세요</p>
-<a href="index.html">← 홈으로</a>
+  <h1>포트폴리오</h1>
+  <p>HTML / CSS / JavaScript</p>
+  <p class="blink">점검중이니 잠시만 기다려주세요</p>
+  <a href="index.html">← 홈으로</a>
 </body>
 </html>
