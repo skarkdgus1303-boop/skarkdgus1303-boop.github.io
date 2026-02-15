@@ -11,6 +11,48 @@ body {
   color: white;
   text-align: center;
   font-family: Arial, sans-serif;
+  /* ===== 움직이는 우주 배경 ===== */
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #0a0f2c, #000814, #000000);
+}
+
+/* 별 배경 */
+body::before {
+  content: "";
+  position: fixed;
+  width: 200%;
+  height: 200%;
+  background: url("https://www.transparenttextures.com/patterns/stardust.png");
+  animation: moveStars 60s linear infinite;
+  opacity: 0.4;
+}
+
+@keyframes moveStars {
+  from { transform: translate(0, 0); }
+  to { transform: translate(-500px, -500px); }
+}
+
+/* 떠다니는 행성 */
+.planet {
+  position: absolute;
+  top: 20%;
+  left: 70%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle at 30% 30%, #00ffff, #003366);
+  border-radius: 50%;
+  box-shadow: 0 0 60px cyan;
+  animation: floatPlanet 6s ease-in-out infinite alternate;
+}
+
+@keyframes floatPlanet {
+  from { transform: translateY(0px); }
+  to { transform: translateY(30px); }
+}
+
 }
 
 #title {
@@ -78,42 +120,3 @@ body {
 </html>
 /* ===== 움직이는 우주 배경 ===== */
 
-body {
-  margin: 0;
-  overflow: hidden;
-  background: radial-gradient(circle at center, #0a0f2c, #000814, #000000);
-}
-
-/* 별 배경 */
-body::before {
-  content: "";
-  position: fixed;
-  width: 200%;
-  height: 200%;
-  background: url("https://www.transparenttextures.com/patterns/stardust.png");
-  animation: moveStars 60s linear infinite;
-  opacity: 0.4;
-}
-
-@keyframes moveStars {
-  from { transform: translate(0, 0); }
-  to { transform: translate(-500px, -500px); }
-}
-
-/* 떠다니는 행성 */
-.planet {
-  position: absolute;
-  top: 20%;
-  left: 70%;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle at 30% 30%, #00ffff, #003366);
-  border-radius: 50%;
-  box-shadow: 0 0 60px cyan;
-  animation: floatPlanet 6s ease-in-out infinite alternate;
-}
-
-@keyframes floatPlanet {
-  from { transform: translateY(0px); }
-  to { transform: translateY(30px); }
-}
