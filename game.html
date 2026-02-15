@@ -109,7 +109,6 @@ button:hover{
 <div id="scoreDisplay">점수: 0</div>
 <div id="gameArea"></div>
 
-<!-- 게임오버 메시지 -->
 <div id="gameOverMsg">💥 게임오버!<br>클릭하면 계속</div>
 
 <script>
@@ -119,6 +118,10 @@ let enemyInterval;
 let moveInterval;
 let bullets = [];
 let scoreDisplay = document.getElementById("scoreDisplay");
+
+/* 방향키 변수 */
+let keysPressed = {};
+let playerSpeed = 10;
 
 /* 게임 초기화 */
 function clearGame(){
@@ -131,6 +134,8 @@ function clearGame(){
   if(moveInterval) clearInterval(moveInterval);
   document.onmousemove=null;
   document.onclick=null;
+  document.onkeydown=null;
+  document.onkeyup=null;
   document.getElementById("gameOverMsg").style.display="none";
 }
 
@@ -139,6 +144,40 @@ function showGameOver(){
   let msg=document.getElementById("gameOverMsg");
   msg.style.display="block";
   msg.onclick=()=>{ msg.style.display="none"; };
+}
+
+/* ================== 플레이어 이동 함수 ================== */
+function enableKeyboard(player){
+  keysPressed = {};
+  document.onkeydown = function(e){
+    keysPressed[e.key] = true;
+  }
+  document.onkeyup = function(e){
+    keysPressed[e.key] = false;
+  }
+
+  function movePlayer(){
+    if(!player) return;
+    let left = player.offsetLeft;
+    let top = player.offsetTop;
+
+    if(keysPressed["ArrowLeft"]) left -= playerSpeed;
+    if(keysPressed["ArrowRight"]) left += playerSpeed;
+    if(keysPressed["ArrowUp"]) top -= playerSpeed;
+    if(keysPressed["ArrowDown"]) top += playerSpeed;
+
+    // 경계값
+    if(left < 0) left = 0;
+    if(left > gameArea.offsetWidth - 40) left = gameArea.offsetWidth - 40;
+    if(top < 0) top = 0;
+    if(top > gameArea.offsetHeight - 40) top = gameArea.offsetHeight - 40;
+
+    player.style.left = left + "px";
+    player.style.top = top + "px";
+
+    requestAnimationFrame(movePlayer);
+  }
+  movePlayer();
 }
 
 /* ================== 슈팅 게임 ================== */
@@ -150,6 +189,7 @@ function startShooting(){
   player.style.left=(gameArea.offsetWidth/2 - 20)+"px";
   player.style.top=(gameArea.offsetHeight - 50)+"px";
 
+  // 마우스 이동
   document.onmousemove = e=>{
     let rect = gameArea.getBoundingClientRect();
     let x = e.clientX - rect.left - 20;
@@ -158,6 +198,10 @@ function startShooting(){
     player.style.left = x + "px";
   }
 
+  // 방향키 이동
+  enableKeyboard(player);
+
+  // 클릭 총알 발사
   document.onclick = ()=>{
     let bullet=document.createElement("div");
     bullet.className="bullet";
@@ -167,6 +211,7 @@ function startShooting(){
     bullets.push(bullet);
   }
 
+  // 적 생성
   enemyInterval=setInterval(()=>{
     let enemy=document.createElement("div");
     enemy.className="enemy";
@@ -175,6 +220,7 @@ function startShooting(){
     gameArea.appendChild(enemy);
   },1000);
 
+  // 적 이동 + 총알 이동
   moveInterval=setInterval(()=>{
     let enemies=document.querySelectorAll(".enemy");
     enemies.forEach(enemy=>{
@@ -221,6 +267,8 @@ function startDodge(){
     if(x>gameArea.offsetWidth-40)x=gameArea.offsetWidth-40;
     player.style.left=x+"px";
   }
+
+  enableKeyboard(player);
 
   enemyInterval=setInterval(()=>{
     let enemy=document.createElement("div");
@@ -307,6 +355,8 @@ function startSpeedDodge(){
     if(x>gameArea.offsetWidth-40)x=gameArea.offsetWidth-40;
     player.style.left=x+"px";
   }
+
+  enableKeyboard(player);
 
   let speed=5;
   enemyInterval=setInterval(()=>{
