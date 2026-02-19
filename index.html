@@ -1,263 +1,191 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<title>사이버 우주</title>
+<meta charset="UTF-8">
+<title>ULTRA CYBER UNIVERSE</title>
 <style>
-  /* ===== 기본 & 중앙 정렬 ===== */
-  body {
-    margin: 0;
-    overflow: hidden;
-    background: radial-gradient(circle at center, #0a0f2c, #000814, #000000);
-    font-family: Arial, sans-serif;
-    cursor: none;
-    perspective: 800px;
+body {
+  margin: 0;
+  overflow: hidden;
+  background: black;
+  cursor: none;
+  font-family: Arial, sans-serif;
+}
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+#ui {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  gap: 15px;
+}
 
-  /* ===== 별 레이어 3개 ===== */
-  .star-layer {
-    position: fixed;
-    width: 200%;
-    height: 200%;
-    top: -50%;
-    left: -50%;
-    background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
-    animation: moveStars linear infinite;
-    pointer-events: none;
-  }
-  .star-layer:nth-child(1) { animation-duration: 100s; opacity: 0.2; z-index:1;}
-  .star-layer:nth-child(2) { animation-duration: 150s; opacity: 0.15; z-index:2;}
-  .star-layer:nth-child(3) { animation-duration: 200s; opacity: 0.1; z-index:3;}
-  @keyframes moveStars {
-    from { transform: translate3d(0,0,0); }
-    to { transform: translate3d(-800px,-800px,0); }
-  }
+button {
+  padding: 10px 20px;
+  background: rgba(0,255,255,0.1);
+  border: 1px solid cyan;
+  color: white;
+  font-weight: bold;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: 0.3s;
+}
+button:hover {
+  background: cyan;
+  color: black;
+  box-shadow: 0 0 20px cyan;
+}
 
-  /* ===== 유성 ===== */
-  .shooting-star {
-    position: absolute;
-    width: 200px;
-    height: 2px;
-    background: linear-gradient(90deg, white, transparent);
-    animation: shoot 5s linear forwards;
-    filter: drop-shadow(0 0 6px cyan);
-    pointer-events: none;
-  }
-  @keyframes shoot {
-    0% { opacity: 1; transform: translateX(0) translateY(0) rotate(20deg); }
-    100% { opacity: 0; transform: translateX(1500px) translateY(400px) rotate(20deg); }
-  }
-
-  /* ===== 떠다니는 행성 ===== */
-  .planet {
-    position: absolute;
-    top: 20%;
-    left: 70%;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle at 30% 30%, #00ffff, #003366);
-    border-radius: 50%;
-    box-shadow: 0 0 100px cyan, inset 0 0 50px #0ff;
-    animation: floatPlanet 6s ease-in-out infinite alternate;
-    transform-style: preserve-3d;
-    pointer-events: none;
-  }
-  @keyframes floatPlanet {
-    0% { transform: translateY(0) rotateY(0deg); }
-    50% { transform: translateY(40px) rotateY(45deg); }
-    100% { transform: translateY(0) rotateY(0deg); }
-  }
-
-  /* ===== 제목 ===== */
-  #title {
-    font-size: 50px;
-    color: #00fff7;
-    animation: neonTitle 2s ease-in-out infinite alternate;
-    text-shadow: 0 0 10px #00fff7, 0 0 20px #00fff7, 0 0 40px #00fff7, 0 0 100px #0ff;
-    margin: 0;
-  }
-  @keyframes neonTitle {
-    0%, 100% {
-      text-shadow: 0 0 10px #00fff7, 0 0 20px #00fff7, 0 0 40px #00fff7, 0 0 100px #0ff;
-    }
-    50% {
-      text-shadow: 0 0 20px #0ff, 0 0 40px #0ff, 0 0 60px #0ff, 0 0 120px #0ff;
-    }
-  }
-
-  /* ===== 작은 글씨 ===== */
-  .subtitle {
-    font-size: 14px;
-    opacity: 0;
-    margin: 10px 0 30px 0;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    animation: fadeIn 2s ease forwards;
-    animation-delay: 0.5s;
-    color: #999;
-  }
-  @keyframes fadeIn {
-    to { opacity: 0.7; }
-  }
-
-  /* ===== 버튼 메뉴 ===== */
-  .menu {
-    display: flex;
-    justify-content: center;
-    gap: 35px;
-    margin-bottom: 40px;
-  }
-  .menu a {
-    display: inline-block;
-    padding: 12px 28px;
-    background: rgba(0, 255, 255, 0.1);
-    border-radius: 12px;
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: bold;
-    transition: 0.3s;
-    cursor: pointer;
-    user-select: none;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
-    animation: neonGlow 3s ease-in-out infinite;
-    text-shadow: 0 0 5px #00fff7;
-  }
-  .menu a:hover {
-    background: cyan;
-    color: black;
-    transform: scale(1.1);
-    box-shadow: 0 0 25px cyan;
-  }
-  @keyframes neonGlow {
-    0%, 100% {
-      box-shadow: 0 0 5px #00fff7, 0 0 10px #00fff7, 0 0 20px #00fff7;
-    }
-    50% {
-      box-shadow: 0 0 15px #0ff, 0 0 25px #0ff, 0 0 35px #0ff;
-    }
-  }
-
-  /* ===== 마우스 커서 네온 ===== */
-  .cursor-light {
-    position: fixed;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    pointer-events: none;
-    background: rgba(0, 255, 255, 0.5);
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.9);
-    transform: translate(-50%, -50%);
-    transition: transform 0.03s linear;
-    z-index: 1000;
-  }
-
-  /* ===== 별 파티클 ===== */
-  .star {
-    position: absolute;
-    background: white;
-    border-radius: 50%;
-    pointer-events: none;
-    opacity: 1;
-    animation: explode 0.8s ease-out forwards;
-  }
-  @keyframes explode {
-    to {
-      transform: translate(var(--x), var(--y)) scale(0);
-      opacity: 0;
-    }
-  }
+#cursor {
+  position: fixed;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: rgba(0,255,255,0.5);
+  box-shadow: 0 0 30px cyan;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
 </style>
 </head>
 <body>
 
-<audio id="bgm" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop autoplay></audio>
-
-<div class="star-layer"></div>
-<div class="star-layer"></div>
-<div class="star-layer"></div>
-
-<div class="planet"></div>
-<div class="cursor-light" id="light"></div>
-
-<h1 id="title">🚀 환영합니다 🚀</h1>
-<p class="subtitle">Welcome to My World.</p>
-
-<div class="menu">
-  <a href="game.html">🎮 게임</a>
-  <a href="portfolio.html">💼 포트폴리오</a>
-  <a href="guestbook.html">📝 방명록</a>
-  <a href="about.html">🙋‍♂️ 어바웃 미</a>
-  <a href="contact.html">📚 Contact</a>
+<div id="ui">
+  <button id="warp">🌠 WARP</button>
+  <button id="blackhole">🕳 BLACKHOLE</button>
+  <button id="sound">🔊 SOUND</button>
 </div>
 
+<div id="cursor"></div>
+
+<audio id="bgm" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
 <script>
-const cursor = document.getElementById('light');
+let scene = new THREE.Scene();
+let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 2000);
+let renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
-document.addEventListener('mousemove', e => {
-  cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+camera.position.z = 200;
 
-  // 마우스 따라 별 파티클 생성
-  const star = document.createElement('div');
-  star.classList.add('star');
-  star.style.left = e.clientX + 'px';
-  star.style.top = e.clientY + 'px';
+// ===== 별 생성 (10000개) =====
+let starsGeometry = new THREE.BufferGeometry();
+let starVertices = [];
 
-  const angle = Math.random() * 2 * Math.PI;
-  const distance = Math.random() * 50 + 10;
-  star.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
-  star.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
-
-  const size = Math.random() * 3 + 2;
-  star.style.width = star.style.height = `${size}px`;
-
-  document.body.appendChild(star);
-  setTimeout(() => star.remove(), 500);
-});
-
-// 클릭 시 별 폭발 및 화면 흔들림 효과
-document.addEventListener('click', e => {
-  for (let i = 0; i < 25; i++) {
-    const star = document.createElement('div');
-    star.classList.add('star');
-    star.style.left = e.clientX + 'px';
-    star.style.top = e.clientY + 'px';
-
-    const angle = Math.random() * 2 * Math.PI;
-    const distance = Math.random() * 100 + 30;
-    star.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
-    star.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
-
-    const size = Math.random() * 4 + 3;
-    star.style.width = star.style.height = `${size}px`;
-
-    document.body.appendChild(star);
-    setTimeout(() => star.remove(), 800);
-  }
-
-  // 화면 흔들림 효과
-  document.body.style.transform = `translate(${Math.random() * 10 - 5}px, ${Math.random() * 10 - 5}px)`;
-  setTimeout(() => {
-    document.body.style.transform = 'translate(0, 0)';
-  }, 100);
-});
-
-// 랜덤 유성 생성 함수
-function spawnMeteor() {
-  const meteor = document.createElement('div');
-  meteor.classList.add('shooting-star');
-  meteor.style.top = Math.random() * 50 + '%';
-  meteor.style.left = '-200px';
-  document.body.appendChild(meteor);
-  setTimeout(() => meteor.remove(), 5000);
+for(let i=0;i<10000;i++){
+  let x = (Math.random()-0.5)*2000;
+  let y = (Math.random()-0.5)*2000;
+  let z = (Math.random()-0.5)*2000;
+  starVertices.push(x,y,z);
 }
-setInterval(spawnMeteor, 2500);
+
+starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices,3));
+let starsMaterial = new THREE.PointsMaterial({color:0xffffff});
+let starField = new THREE.Points(starsGeometry,starsMaterial);
+scene.add(starField);
+
+// ===== 행성 =====
+let planets = [];
+for(let i=0;i<5;i++){
+  let geometry = new THREE.SphereGeometry(20+Math.random()*20,32,32);
+  let material = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(`hsl(${Math.random()*360},100%,50%)`),
+    emissive: 0x111111
+  });
+  let planet = new THREE.Mesh(geometry,material);
+  planet.position.x = 200 + i*150;
+  scene.add(planet);
+  planets.push(planet);
+}
+
+let light = new THREE.PointLight(0xffffff,2,1000);
+light.position.set(0,0,0);
+scene.add(light);
+
+// ===== 마우스 카메라 제어 =====
+document.addEventListener('mousemove',(e)=>{
+  let x = (e.clientX/window.innerWidth - 0.5)*2;
+  let y = (e.clientY/window.innerHeight - 0.5)*2;
+  camera.rotation.y = x*0.5;
+  camera.rotation.x = y*0.5;
+
+  document.getElementById('cursor').style.left = e.clientX+"px";
+  document.getElementById('cursor').style.top = e.clientY+"px";
+});
+
+// ===== 애니메이션 =====
+function animate(){
+  requestAnimationFrame(animate);
+  starField.rotation.y += 0.0005;
+
+  planets.forEach((p,i)=>{
+    p.rotation.y += 0.01;
+    p.position.x = Math.cos(Date.now()*0.0002+i)*300;
+    p.position.z = Math.sin(Date.now()*0.0002+i)*300;
+  });
+
+  renderer.render(scene,camera);
+}
+animate();
+
+// ===== 워프 모드 =====
+document.getElementById('warp').onclick = ()=>{
+  camera.position.z = 50;
+  let interval = setInterval(()=>{
+    starField.rotation.y += 0.05;
+  },10);
+  setTimeout(()=>{
+    clearInterval(interval);
+    camera.position.z = 200;
+  },2000);
+};
+
+// ===== 블랙홀 =====
+document.getElementById('blackhole').onclick = ()=>{
+  planets.forEach(p=>{
+    p.position.multiplyScalar(0.5);
+  });
+};
+
+// ===== 사운드 + 음악 반응 =====
+let bgm = document.getElementById('bgm');
+let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+let analyser = audioContext.createAnalyser();
+let source = audioContext.createMediaElementSource(bgm);
+source.connect(analyser);
+analyser.connect(audioContext.destination);
+analyser.fftSize = 256;
+let dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+document.getElementById('sound').onclick = ()=>{
+  if(bgm.paused){
+    bgm.play();
+    audioContext.resume();
+  } else {
+    bgm.pause();
+  }
+};
+
+function audioReactive(){
+  analyser.getByteFrequencyData(dataArray);
+  let avg = dataArray.reduce((a,b)=>a+b)/dataArray.length;
+  starField.scale.setScalar(1+avg/300);
+  requestAnimationFrame(audioReactive);
+}
+audioReactive();
+
+window.addEventListener('resize',()=>{
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth,window.innerHeight);
+});
 </script>
 
 </body>
