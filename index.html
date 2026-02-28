@@ -13,6 +13,53 @@ body{
   cursor:none;
 }
 
+/* 로그인 화면 */
+#loginScreen{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:black;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+
+#loginBox{
+  background:rgba(0,255,255,0.08);
+  border:1px solid cyan;
+  padding:40px;
+  border-radius:15px;
+  text-align:center;
+  backdrop-filter:blur(15px);
+  box-shadow:0 0 40px cyan;
+}
+
+#loginBox h2{
+  color:#0ff;
+  margin-bottom:20px;
+}
+
+#loginBox input{
+  display:block;
+  width:200px;
+  margin:10px auto;
+  padding:8px;
+  border:none;
+  border-radius:8px;
+  text-align:center;
+}
+
+#loginBox button{
+  margin-top:15px;
+  width:100%;
+}
+
+#loginMsg{
+  color:red;
+  margin-top:10px;
+}
+
 /* WebGL */
 canvas{
   position:fixed;
@@ -53,7 +100,7 @@ canvas{
   gap:20px;
 }
 
-/* 메뉴 5개 */
+/* 메뉴 */
 .menu{
   display:flex;
   gap:25px;
@@ -140,10 +187,20 @@ button:hover{
 
 <body>
 
+<!-- 로그인 화면 -->
+<div id="loginScreen">
+  <div id="loginBox">
+    <h2>🚀 CYBER COSMIC LOGIN</h2>
+    <input type="text" id="username" placeholder="아이디">
+    <input type="password" id="password" placeholder="비밀번호">
+    <button id="loginBtn">LOGIN</button>
+    <p id="loginMsg"></p>
+  </div>
+</div>
+
 <div class="nebula"></div>
 
 <div id="ui">
-
   <div class="menu">
     <a href="game.html">🎮 게임</a>
     <a href="portfolio.html">💼 포트폴리오</a>
@@ -157,7 +214,6 @@ button:hover{
     <button id="blackhole">🕳 BLACKHOLE</button>
     <button id="sound">🔊 SOUND</button>
   </div>
-
 </div>
 
 <h1 id="title">🚀 CYBER COSMIC OVERDRIVE 🚀</h1>
@@ -169,6 +225,23 @@ button:hover{
 
 <script>
 
+/* ===== 로그인 기능 ===== */
+
+const correctId = "rkdgus0912";
+const correctPw = "6664";
+
+document.getElementById("loginBtn").onclick = () => {
+  const id = document.getElementById("username").value;
+  const pw = document.getElementById("password").value;
+  const msg = document.getElementById("loginMsg");
+
+  if(id === correctId && pw === correctPw){
+    document.getElementById("loginScreen").style.display = "none";
+  } else {
+    msg.textContent = "❌ 아이디 또는 비밀번호가 틀렸습니다.";
+  }
+};
+
 /* ===== THREE SETUP ===== */
 let scene=new THREE.Scene();
 let camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,4000);
@@ -177,7 +250,7 @@ renderer.setSize(innerWidth,innerHeight);
 document.body.appendChild(renderer.domElement);
 camera.position.z=300;
 
-/* ===== 별 15000 ===== */
+/* ===== 별 ===== */
 let geo=new THREE.BufferGeometry();
 let verts=[];
 for(let i=0;i<15000;i++){
@@ -192,108 +265,12 @@ let mat=new THREE.PointsMaterial({color:0xffffff,size:2});
 let stars=new THREE.Points(geo,mat);
 scene.add(stars);
 
-/* ===== 행성 ===== */
-let planets=[];
-for(let i=0;i<6;i++){
-  let g=new THREE.SphereGeometry(20+Math.random()*30,32,32);
-  let m=new THREE.MeshStandardMaterial({
-    color:new THREE.Color(`hsl(${Math.random()*360},100%,50%)`)
-  });
-  let p=new THREE.Mesh(g,m);
-  scene.add(p);
-  planets.push(p);
-}
-let light=new THREE.PointLight(0xffffff,2,3000);
-scene.add(light);
-
-/* ===== 애니메이션 ===== */
 function animate(){
   requestAnimationFrame(animate);
   stars.rotation.y+=0.0006;
-
-  planets.forEach((p,i)=>{
-    p.rotation.y+=0.01;
-    p.position.x=Math.cos(Date.now()*0.0002+i)*500;
-    p.position.z=Math.sin(Date.now()*0.0002+i)*500;
-  });
-
   renderer.render(scene,camera);
 }
 animate();
-
-/* ===== 마우스 ===== */
-const cursor=document.getElementById('cursor');
-document.addEventListener('mousemove',e=>{
-  cursor.style.left=e.clientX+"px";
-  cursor.style.top=e.clientY+"px";
-  camera.rotation.y=(e.clientX/innerWidth-0.5)*0.6;
-  camera.rotation.x=(e.clientY/innerHeight-0.5)*0.6;
-});
-
-/* ===== 클릭 폭발 ===== */
-document.addEventListener('click',e=>{
-  for(let i=0;i<25;i++){
-    let s=document.createElement('div');
-    s.className='star';
-    s.style.left=e.clientX+"px";
-    s.style.top=e.clientY+"px";
-    let a=Math.random()*Math.PI*2;
-    let d=Math.random()*120;
-    s.style.setProperty('--x',Math.cos(a)*d+'px');
-    s.style.setProperty('--y',Math.sin(a)*d+'px');
-    s.style.width=s.style.height=(Math.random()*4+2)+'px';
-    document.body.appendChild(s);
-    setTimeout(()=>s.remove(),800);
-  }
-});
-
-/* ===== 워프 ===== */
-document.getElementById('warp').onclick=()=>{
-  let speed=0.05;
-  let interval=setInterval(()=>{
-    stars.rotation.y+=speed;
-    speed+=0.02;
-  },30);
-  setTimeout(()=>clearInterval(interval),2000);
-};
-
-/* ===== 블랙홀 ===== */
-document.getElementById('blackhole').onclick=()=>{
-  planets.forEach(p=>p.position.multiplyScalar(0.2));
-};
-
-/* ===== 음악 반응 ===== */
-let bgm=document.getElementById('bgm');
-let ctx=new (window.AudioContext||window.webkitAudioContext)();
-let analyser=ctx.createAnalyser();
-let source=ctx.createMediaElementSource(bgm);
-source.connect(analyser);
-analyser.connect(ctx.destination);
-analyser.fftSize=256;
-let data=new Uint8Array(analyser.frequencyBinCount);
-
-document.getElementById('sound').onclick=()=>{
-  if(bgm.paused){
-    bgm.play();
-    ctx.resume();
-  }else{
-    bgm.pause();
-  }
-};
-
-function react(){
-  analyser.getByteFrequencyData(data);
-  let avg=data.reduce((a,b)=>a+b)/data.length;
-  stars.scale.setScalar(1+avg/400);
-  requestAnimationFrame(react);
-}
-react();
-
-window.addEventListener('resize',()=>{
-  camera.aspect=innerWidth/innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth,innerHeight);
-});
 
 </script>
 </body>
