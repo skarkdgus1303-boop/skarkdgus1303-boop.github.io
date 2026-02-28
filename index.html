@@ -13,16 +13,18 @@ body{
   cursor:none;
 }
 
-/* 로그인 화면 */
+/* 로그인 화면 (우주 위에 유리처럼 덮힘) */
 #loginScreen{
   position:fixed;
   width:100%;
   height:100%;
-  background:black;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(10px);
   display:flex;
   justify-content:center;
   align-items:center;
   z-index:999;
+  transition:opacity .8s ease;
 }
 
 #loginBox{
@@ -42,7 +44,7 @@ body{
 
 #loginBox input{
   display:block;
-  width:200px;
+  width:220px;
   margin:10px auto;
   padding:8px;
   border:none;
@@ -87,7 +89,7 @@ canvas{
   to{transform:rotate(360deg);}
 }
 
-/* UI 전체 */
+/* UI */
 #ui{
   position:fixed;
   top:20px;
@@ -100,7 +102,6 @@ canvas{
   gap:20px;
 }
 
-/* 메뉴 */
 .menu{
   display:flex;
   gap:25px;
@@ -122,7 +123,6 @@ canvas{
   box-shadow:0 0 20px cyan;
 }
 
-/* 엔진 버튼 */
 .engine{
   display:flex;
   gap:15px;
@@ -143,7 +143,6 @@ button:hover{
   box-shadow:0 0 20px cyan;
 }
 
-/* 제목 */
 #title{
   position:fixed;
   bottom:40px;
@@ -155,7 +154,6 @@ button:hover{
   z-index:10;
 }
 
-/* 네온 커서 */
 #cursor{
   position:fixed;
   width:25px;
@@ -168,7 +166,6 @@ button:hover{
   z-index:100;
 }
 
-/* 클릭 폭발 */
 .star{
   position:absolute;
   background:white;
@@ -187,6 +184,8 @@ button:hover{
 
 <body>
 
+<div class="nebula"></div>
+
 <!-- 로그인 화면 -->
 <div id="loginScreen">
   <div id="loginBox">
@@ -198,35 +197,28 @@ button:hover{
   </div>
 </div>
 
-<div class="nebula"></div>
-
 <div id="ui">
   <div class="menu">
-    <a href="game.html">🎮 게임</a>
-    <a href="portfolio.html">💼 포트폴리오</a>
-    <a href="guestbook.html">📝 방명록</a>
-    <a href="about.html">🙋‍♂️ 어바웃 미</a>
-    <a href="contact.html">📚 Contact</a>
+    <a href="#">🎮 게임</a>
+    <a href="#">💼 포트폴리오</a>
+    <a href="#">📝 방명록</a>
+    <a href="#">🙋‍♂️ 어바웃 미</a>
+    <a href="#">📚 Contact</a>
   </div>
 
   <div class="engine">
     <button id="warp">🌠 WARP</button>
-    <button id="blackhole">🕳 BLACKHOLE</button>
-    <button id="sound">🔊 SOUND</button>
   </div>
 </div>
 
 <h1 id="title">🚀 CYBER COSMIC OVERDRIVE 🚀</h1>
 <div id="cursor"></div>
 
-<audio id="bgm" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
 
-/* ===== 로그인 기능 ===== */
-
+/* ===== 로그인 ===== */
 const correctId = "rkdgus0912";
 const correctPw = "6664";
 
@@ -236,13 +228,16 @@ document.getElementById("loginBtn").onclick = () => {
   const msg = document.getElementById("loginMsg");
 
   if(id === correctId && pw === correctPw){
-    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("loginScreen").style.opacity = "0";
+    setTimeout(()=>{
+      document.getElementById("loginScreen").style.display="none";
+    },800);
   } else {
     msg.textContent = "❌ 아이디 또는 비밀번호가 틀렸습니다.";
   }
 };
 
-/* ===== THREE SETUP ===== */
+/* ===== 우주 배경 (항상 실행) ===== */
 let scene=new THREE.Scene();
 let camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,4000);
 let renderer=new THREE.WebGLRenderer({antialias:true});
@@ -250,7 +245,6 @@ renderer.setSize(innerWidth,innerHeight);
 document.body.appendChild(renderer.domElement);
 camera.position.z=300;
 
-/* ===== 별 ===== */
 let geo=new THREE.BufferGeometry();
 let verts=[];
 for(let i=0;i<15000;i++){
@@ -271,6 +265,13 @@ function animate(){
   renderer.render(scene,camera);
 }
 animate();
+
+/* 마우스 네온 커서 */
+const cursor=document.getElementById('cursor');
+document.addEventListener('mousemove',e=>{
+  cursor.style.left=e.clientX+"px";
+  cursor.style.top=e.clientY+"px";
+});
 
 </script>
 </body>
