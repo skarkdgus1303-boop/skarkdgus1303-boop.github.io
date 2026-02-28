@@ -13,7 +13,7 @@ body{
   cursor:none;
 }
 
-/* 로그인 화면 (우주 위에 유리처럼 덮힘) */
+/* 로그인 화면 */
 #loginScreen{
   position:fixed;
   width:100%;
@@ -123,26 +123,6 @@ canvas{
   box-shadow:0 0 20px cyan;
 }
 
-.engine{
-  display:flex;
-  gap:15px;
-}
-button{
-  padding:8px 18px;
-  background:rgba(255,255,255,0.08);
-  border:1px solid #0ff;
-  color:white;
-  border-radius:10px;
-  backdrop-filter:blur(10px);
-  cursor:pointer;
-  transition:.3s;
-}
-button:hover{
-  background:cyan;
-  color:black;
-  box-shadow:0 0 20px cyan;
-}
-
 #title{
   position:fixed;
   bottom:40px;
@@ -164,20 +144,6 @@ button:hover{
   pointer-events:none;
   transform:translate(-50%,-50%);
   z-index:100;
-}
-
-.star{
-  position:absolute;
-  background:white;
-  border-radius:50%;
-  pointer-events:none;
-  animation:explode .8s ease-out forwards;
-}
-@keyframes explode{
-  to{
-    transform:translate(var(--x),var(--y)) scale(0);
-    opacity:0;
-  }
 }
 </style>
 </head>
@@ -205,10 +171,6 @@ button:hover{
     <a href="#">🙋‍♂️ 어바웃 미</a>
     <a href="#">📚 Contact</a>
   </div>
-
-  <div class="engine">
-    <button id="warp">🌠 WARP</button>
-  </div>
 </div>
 
 <h1 id="title">🚀 CYBER COSMIC OVERDRIVE 🚀</h1>
@@ -218,11 +180,12 @@ button:hover{
 
 <script>
 
-/* ===== 로그인 ===== */
+/* 로그인 정보 */
 const correctId = "rkdgus0912";
 const correctPw = "6664";
 
-document.getElementById("loginBtn").onclick = () => {
+/* 로그인 함수 */
+function doLogin(){
   const id = document.getElementById("username").value;
   const pw = document.getElementById("password").value;
   const msg = document.getElementById("loginMsg");
@@ -235,9 +198,19 @@ document.getElementById("loginBtn").onclick = () => {
   } else {
     msg.textContent = "❌ 아이디 또는 비밀번호가 틀렸습니다.";
   }
-};
+}
 
-/* ===== 우주 배경 (항상 실행) ===== */
+/* 버튼 클릭 로그인 */
+document.getElementById("loginBtn").onclick = doLogin;
+
+/* 엔터키 로그인 */
+document.addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    doLogin();
+  }
+});
+
+/* ===== 우주 배경 ===== */
 let scene=new THREE.Scene();
 let camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,4000);
 let renderer=new THREE.WebGLRenderer({antialias:true});
@@ -266,7 +239,7 @@ function animate(){
 }
 animate();
 
-/* 마우스 네온 커서 */
+/* 네온 커서 */
 const cursor=document.getElementById('cursor');
 document.addEventListener('mousemove',e=>{
   cursor.style.left=e.clientX+"px";
