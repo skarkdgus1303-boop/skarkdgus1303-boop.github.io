@@ -23,7 +23,7 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  z-index:999;
+  z-index:9999;
   transition:opacity .8s ease;
 }
 
@@ -33,15 +33,10 @@ body{
   padding:40px;
   border-radius:15px;
   text-align:center;
-  backdrop-filter:blur(15px);
   box-shadow:0 0 40px cyan;
 }
 
-#loginBox h2{
-  color:#0ff;
-  margin-bottom:20px;
-}
-
+#loginBox h2{ color:#0ff; }
 #loginBox input{
   display:block;
   width:220px;
@@ -51,42 +46,36 @@ body{
   border-radius:8px;
   text-align:center;
 }
-
 #loginBox button{
-  margin-top:15px;
   width:100%;
+  padding:10px;
+  background:cyan;
+  border:none;
+  font-weight:bold;
+  cursor:pointer;
 }
+#loginMsg{ color:red; }
 
-#loginMsg{
-  color:red;
-  margin-top:10px;
-}
-
-/* WebGL */
+/* canvas */
 canvas{
   position:fixed;
   top:0;
   left:0;
   z-index:0;
+  pointer-events:none; /* 🔥 클릭 방해 해결 */
 }
 
-/* 성운 */
-.nebula{
+/* 네온 커서 */
+#cursor{
   position:fixed;
-  width:200%;
-  height:200%;
-  top:-50%;
-  left:-50%;
-  background:
-    radial-gradient(circle at 30% 40%, rgba(0,255,255,0.15), transparent 40%),
-    radial-gradient(circle at 70% 60%, rgba(255,0,255,0.15), transparent 40%);
-  animation:rotate 200s linear infinite;
+  width:25px;
+  height:25px;
+  border-radius:50%;
+  background:rgba(0,255,255,0.5);
+  box-shadow:0 0 30px cyan;
   pointer-events:none;
-  z-index:1;
-}
-@keyframes rotate{
-  from{transform:rotate(0deg);}
-  to{transform:rotate(360deg);}
+  transform:translate(-50%,-50%);
+  z-index:100;
 }
 
 /* UI */
@@ -96,7 +85,7 @@ canvas{
   left:50%;
   transform:translateX(-50%);
   z-index:10;
-  display:flex;
+  display:none;
   flex-direction:column;
   align-items:center;
   gap:20px;
@@ -114,13 +103,27 @@ canvas{
   color:white;
   text-decoration:none;
   font-weight:bold;
-  backdrop-filter:blur(10px);
   transition:.3s;
 }
 .menu a:hover{
   background:cyan;
   color:black;
   box-shadow:0 0 20px cyan;
+}
+
+/* 페이지 */
+.page{
+  position:fixed;
+  top:120px;
+  width:100%;
+  text-align:center;
+  color:white;
+  display:none;
+  animation:fade .5s ease;
+}
+@keyframes fade{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
 }
 
 #title{
@@ -133,45 +136,39 @@ canvas{
   text-shadow:0 0 20px #0ff;
   z-index:10;
 }
-
-#cursor{
-  position:fixed;
-  width:25px;
-  height:25px;
-  border-radius:50%;
-  background:rgba(0,255,255,0.5);
-  box-shadow:0 0 30px cyan;
-  pointer-events:none;
-  transform:translate(-50%,-50%);
-  z-index:100;
-}
 </style>
 </head>
 
 <body>
 
-<div class="nebula"></div>
-
-<!-- 로그인 화면 -->
+<!-- 로그인 -->
 <div id="loginScreen">
   <div id="loginBox">
     <h2>🚀 CYBER COSMIC LOGIN</h2>
     <input type="text" id="username" placeholder="아이디">
     <input type="password" id="password" placeholder="비밀번호">
-    <button id="loginBtn">LOGIN</button>
+    <button onclick="doLogin()">LOGIN</button>
     <p id="loginMsg"></p>
   </div>
 </div>
 
+<!-- UI -->
 <div id="ui">
   <div class="menu">
-    <a href="#">🎮 게임</a>
-    <a href="#">💼 포트폴리오</a>
-    <a href="#">📝 방명록</a>
-    <a href="#">🙋‍♂️ 어바웃 미</a>
-    <a href="#">📚 Contact</a>
+    <a onclick="openPage('game')">🎮 게임</a>
+    <a onclick="openPage('portfolio')">💼 포트폴리오</a>
+    <a onclick="openPage('guest')">📝 방명록</a>
+    <a onclick="openPage('about')">🙋‍♂️ 어바웃 미</a>
+    <a onclick="openPage('contact')">📚 Contact</a>
   </div>
 </div>
+
+<!-- 페이지 내용 -->
+<div id="game" class="page"><h2>🎮 GAME PAGE</h2></div>
+<div id="portfolio" class="page"><h2>💼 PORTFOLIO PAGE</h2></div>
+<div id="guest" class="page"><h2>📝 GUESTBOOK PAGE</h2></div>
+<div id="about" class="page"><h2>🙋‍♂️ ABOUT ME PAGE</h2></div>
+<div id="contact" class="page"><h2>📚 CONTACT PAGE</h2></div>
 
 <h1 id="title">🚀 CYBER COSMIC OVERDRIVE 🚀</h1>
 <div id="cursor"></div>
@@ -179,38 +176,30 @@ canvas{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
+/* 로그인 */
+const correctId="rkdgus0912";
+const correctPw="6664";
 
-/* 로그인 정보 */
-const correctId = "rkdgus0912";
-const correctPw = "6664";
-
-/* 로그인 함수 */
 function doLogin(){
-  const id = document.getElementById("username").value;
-  const pw = document.getElementById("password").value;
-  const msg = document.getElementById("loginMsg");
+  const id=document.getElementById("username").value;
+  const pw=document.getElementById("password").value;
+  const msg=document.getElementById("loginMsg");
 
-  if(id === correctId && pw === correctPw){
-    document.getElementById("loginScreen").style.opacity = "0";
-    setTimeout(()=>{
-      document.getElementById("loginScreen").style.display="none";
-    },800);
-  } else {
-    msg.textContent = "❌ 아이디 또는 비밀번호가 틀렸습니다.";
+  if(id===correctId && pw===correctPw){
+    document.getElementById("loginScreen").style.display="none";
+    document.getElementById("ui").style.display="flex";
+  } else{
+    msg.textContent="❌ 아이디 또는 비밀번호가 틀렸습니다.";
   }
 }
 
-/* 버튼 클릭 로그인 */
-document.getElementById("loginBtn").onclick = doLogin;
+/* 페이지 전환 */
+function openPage(pageId){
+  document.querySelectorAll(".page").forEach(p=>p.style.display="none");
+  document.getElementById(pageId).style.display="block";
+}
 
-/* 엔터키 로그인 */
-document.addEventListener("keydown", function(e){
-  if(e.key === "Enter"){
-    doLogin();
-  }
-});
-
-/* ===== 우주 배경 ===== */
+/* 우주 배경 */
 let scene=new THREE.Scene();
 let camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,4000);
 let renderer=new THREE.WebGLRenderer({antialias:true});
@@ -245,7 +234,7 @@ document.addEventListener('mousemove',e=>{
   cursor.style.left=e.clientX+"px";
   cursor.style.top=e.clientY+"px";
 });
-
 </script>
+
 </body>
 </html>
