@@ -13,7 +13,7 @@ body{
   cursor:none;
 }
 
-/* 🔥 배경 전용 레이어 */
+/* 🔥 배경 전용 */
 #bg{
   position:fixed;
   top:0;
@@ -70,7 +70,7 @@ body{
 
 #loginMsg{ color:red; }
 
-/* UI */
+/* 메뉴 */
 #ui{
   position:fixed;
   top:20px;
@@ -103,24 +103,44 @@ body{
   box-shadow:0 0 20px cyan;
 }
 
-/* 페이지 */
+/* 🔥 페이지 슬라이드 전환 */
 .page{
   position:fixed;
-  top:150px;
+  top:0;
+  left:100%;
   width:100%;
-  text-align:center;
-  font-size:30px;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:40px;
   color:white;
-  opacity:0;
-  transform:scale(.8);
-  transition:.5s;
-  z-index:2000;
+  background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(15px);
+  transition:0.6s ease;
+  z-index:1500;
 }
 
 .page.active{
-  opacity:1;
-  transform:scale(1);
-  text-shadow:0 0 20px cyan;
+  left:0;
+}
+
+/* 뒤로가기 버튼 */
+.backBtn{
+  position:absolute;
+  top:30px;
+  left:30px;
+  padding:10px 15px;
+  border:1px solid cyan;
+  background:rgba(0,255,255,0.1);
+  color:white;
+  cursor:pointer;
+  border-radius:8px;
+}
+
+.backBtn:hover{
+  background:cyan;
+  color:black;
 }
 
 /* 네온 커서 */
@@ -164,23 +184,41 @@ body{
   </div>
 </div>
 
-<!-- 페이지 -->
-<div id="game" class="page">🎮 GAME PAGE</div>
-<div id="portfolio" class="page">💼 PORTFOLIO PAGE</div>
-<div id="guest" class="page">📝 GUESTBOOK PAGE</div>
-<div id="about" class="page">🙋‍♂️ ABOUT ME PAGE</div>
-<div id="contact" class="page">📚 CONTACT PAGE</div>
+<!-- 페이지들 -->
+<div id="game" class="page">
+  <div class="backBtn" onclick="closePage()">⬅ 뒤로</div>
+  🎮 환영합니다
+</div>
+
+<div id="portfolio" class="page">
+  <div class="backBtn" onclick="closePage()">⬅ 뒤로</div>
+  💼 포트폴리오 페이지
+</div>
+
+<div id="guest" class="page">
+  <div class="backBtn" onclick="closePage()">⬅ 뒤로</div>
+  📝 방명록 페이지
+</div>
+
+<div id="about" class="page">
+  <div class="backBtn" onclick="closePage()">⬅ 뒤로</div>
+  🙋‍♂️ 어바웃 미 페이지
+</div>
+
+<div id="contact" class="page">
+  <div class="backBtn" onclick="closePage()">⬅ 뒤로</div>
+  📚 Contact 페이지
+</div>
 
 <div id="cursor"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
-/* 로그인 정보 */
+/* 로그인 */
 const correctId="rkdgus0912";
 const correctPw="6664";
 
-/* 로그인 */
 function doLogin(){
   const id=document.getElementById("username").value;
   const pw=document.getElementById("password").value;
@@ -197,10 +235,15 @@ function doLogin(){
   }
 }
 
-/* 페이지 전환 */
+/* 페이지 열기 */
 function openPage(id){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById(id).classList.add("active");
+}
+
+/* 페이지 닫기 */
+function closePage(){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
 }
 
 /* Three.js 배경 */
@@ -208,9 +251,7 @@ let scene=new THREE.Scene();
 let camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,4000);
 let renderer=new THREE.WebGLRenderer({antialias:true});
 renderer.setSize(innerWidth,innerHeight);
-
 document.getElementById("bg").appendChild(renderer.domElement);
-
 camera.position.z=300;
 
 let geo=new THREE.BufferGeometry();
